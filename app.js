@@ -10,6 +10,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/usersRouter');
 const testRouter = require('./routes/testRouter')
 const daysRouter = require('./routes/daysRouter')
+const uploadRouter = require('./routes/uploadRouter')
 const { userRes } = require('./utils/response')
 
 const app = express();
@@ -37,8 +38,7 @@ app.use(session({
     path: '/', httpOnly: true, secure: false, maxAge: null,
   },
 }))
-// 公共静态资源
-app.use(express.static(path.join(__dirname, 'public')));
+
 // 服务器主页
 app.use('/', indexRouter);
 // 用户路由
@@ -52,23 +52,30 @@ app.use((req, res, next) => {
     res.send(userRes(-998, '未登录，请先登录'))
   }
 })
+// 公共静态资源
+app.use(express.static(path.join(__dirname, 'public')));
 // 测试路由
 app.use('/test', testRouter);
 app.use('/days', daysRouter)
+app.use('/upload', uploadRouter)
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use((err, req, res) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// app.use((err, req, res) => {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
+// 捕获错误
+app.use((err, req, res, next) => {
+  res.send(userRes(-500, err.toString()));
 });
 
 module.exports = app;

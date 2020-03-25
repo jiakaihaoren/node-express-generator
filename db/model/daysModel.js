@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  date: { type: Number, required: true },
-  keywords: { type: Array, required: true },
+  date: { type: Array },
+  keywords: { type: Array },
   details: { type: String, required: true },
-  images: { type: Array, required: true },
-  videos: { type: Array, required: true },
+  images: { type: Array },
+  videos: { type: Array },
 });
 
 const Days = mongoose.model('days', userSchema);

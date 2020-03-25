@@ -1,2 +1,2 @@
-const userRes = (err, msg) => ({ err, msg })
+const userRes = (err, msg, data) => ({ err, msg, data })
 module.exports = { userRes }
